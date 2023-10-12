@@ -7,17 +7,17 @@ import { useReducer } from "react";
 export interface Action {
   type: "add" | "remove";
   payload: {
-    id: number;
+    id: string;
     name: string;
-    timezone: string;
+    timezone: number;
   };
 }
 
 interface State {
   watches: {
-    id: number;
+    id: string;
     name: string;
-    timezone: string;
+    timezone: number;
   }[];
 }
 
@@ -26,7 +26,12 @@ function reducer(state: State, action: Action) {
     case "add":
       return { ...state, watches: [...state.watches, action.payload] };
     case "remove":
-      return { ...state };
+      return {
+        ...state,
+        watches: state.watches.filter(
+          (watch) => watch.id !== action.payload.id,
+        ),
+      };
     default:
       return state;
   }
